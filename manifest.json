@@ -2,7 +2,7 @@
 {
   "name": "알람 리모컨",
   "short_name": "리모컨",
-  "start_url": "모바일_알람리모컨_PWA.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
