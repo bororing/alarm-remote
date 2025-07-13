@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>📱 모바일 알람 리모컨</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#000000"/>
+  <link rel="manifest" href="manifest.json" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    button {
+      padding: 18px 28px;
+      font-size: 24px;
+      background: #ff4444;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 400px;
+    }
+    button:hover {
+      background: #ff6666;
+    }
+    #status {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔕 Firebase 알람 끄기</h2>
+  <button onclick="stopAlarm()">🟢 알람 끄기 (stop=false)</button>
+  <div id="status">⏳ Firebase 연결 대기 중...</div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWGgd_v777kSn3OZoIteBc729LS2kefqY",
+      authDomain: "test1-a615e.firebaseapp.com",
+      databaseURL: "https://test1-a615e-default-rtdb.firebaseio.com",
+      projectId: "test1-a615e",
+      storageBucket: "test1-a615e.firebasestorage.app",
+      messagingSenderId: "542685624994",
+      appId: "1:542685624994:web:011ed04c40ffa34e1ef5fb",
+      measurementId: "G-09LR139BG9"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const statusEl = document.getElementById("status");
+
+    function stopAlarm() {
+      statusEl.innerText = "📡 stop=false 전송 중...";
+      db.ref("stop").set(false).then(() => {
+        statusEl.innerText = "✅ 알람 끄기 완료 (stop=false)";
+      }).catch(err => {
+        statusEl.innerText = "❌ 실패: " + err.message;
+      });
+    }
+
+    window.onload = () => {
+      statusEl.innerText = "✅ Firebase 연결 완료. 알람 제어 가능";
+
+      // Register service worker
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log("✅ Service Worker 등록됨"))
+          .catch(err => console.log("❌ Service Worker 등록 실패:", err));
+      }
+    };
+  </script>
+</body>
+</html>
